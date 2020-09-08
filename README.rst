@@ -6,8 +6,8 @@ SmartAgro
 .. image:: https://img.shields.io/pypi/v/smartagro.svg
         :target: https://pypi.python.org/pypi/smartagro
 
-.. image:: https://img.shields.io/travis/chris-kck/smartagro.svg
-        :target: https://travis-ci.com/chris-kck/smartagro
+.. image:: https://travis-ci.com/chris-kck/SmartAgro.svg?branch=master
+        :target: https://travis-ci.com/chris-kck/SmartAgro
 
 .. image:: https://readthedocs.org/projects/smartagro/badge/?version=latest
         :target: https://smartagro.readthedocs.io/en/latest/?badge=latest
