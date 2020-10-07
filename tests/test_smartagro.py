@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Tests for `smartagro` package."""
+"""Tests for `smart` module in Smartagro package."""
 
 import pytest
 

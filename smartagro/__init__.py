@@ -14,4 +14,4 @@ __version__ = '0.1.0'
 __all__ = ['smart','utils'] #imports for from <package_name> import *
 
 
-print(f'Invoking __init.py__ for {__name__}')
+print("Invoking __init.py__ for".format(__name__))
