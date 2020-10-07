@@ -17,6 +17,14 @@ SmartAgro
 .. image:: https://pyup.io/repos/github/chris-kck/smartagro/shield.svg
      :target: https://pyup.io/repos/github/chris-kck/smartagro/
      :alt: Updates
+     
+.. image:: https://img.shields.io/badge/language-python-yellow.svg?style=flat-square
+     :target: #
+     :alt: Python Language
+     
+.. image:: https://img.shields.io/badge/License-GPLv3-green.svg?style=flat-square
+     :target: #
+     :alt: Python Language
 
 
 
