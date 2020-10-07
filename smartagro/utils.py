@@ -2,7 +2,7 @@
 
 def bar():
     from smartagro import __author__
-    print(f'[mod2] bar() {__author__}')
+    print('[mod2] bar(){}'.format(__author__)) # f'haha{var}' not supported in python 3.5
 
 
 class Bar:
