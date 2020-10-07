@@ -1,4 +1,5 @@
 """Utilities Module."""
+from paho import mqtt
 
 def bar():
     from smartagro import __author__
@@ -34,6 +35,8 @@ def sensor_update(addr, new_sample_rate): #Dynamic adjustment of sensor details
 
 def find_broker(): #Scan for a MQTT broker within network
     pass
+
+#functions to communicate with Seeed devices. ADC/Direct/?
 
 
 #All of the above for actuator //Connecting actuator to raspberry pi, configuring to subscribe to mqtt topics that send commands to activate / deactivate.
