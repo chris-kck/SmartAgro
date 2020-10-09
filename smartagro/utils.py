@@ -47,8 +47,17 @@ def list_active_sensor_streams(broker):  # show topics being published to broker
 def sensor_update(addr, new_sample_rate):  # Dynamic adjustment of sensor details
     pass
 
-def find_broker(): #Scan for a MQTT broker within network
-    pass
+def find_broker():  # Scan for a MQTT broker within network
+    # Add support to scan online hosts' ports to find broker. - still buggy
+    online_dev = scan_network()
+    for ip in online_dev:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        conn = s.connect_ex((ip, 1883))  # scan port 1883 and 8883 for SSL
+        if (conn == 0):
+            print(f'MQTT Port 1883 OPEN for {ip}')
+        s.close()
+        print("Scan Completed")
+
 
 def get_ip():
     try:
