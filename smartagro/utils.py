@@ -60,24 +60,24 @@ def find_broker():  # Scan for a MQTT broker within network
 
 
 def get_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(('10.255.255.255', 1))
         IP = s.getsockname()[0]
     except:
-        IP = '127.0.0.1' #localhost loopback IP if not connected to wifi
+        IP = '127.0.0.1'  # localhost loopback IP if not connected to wifi
     finally:
-        s.close() #close socket
+        s.close()  # close socket
     return IP
 
 def scan_network():
     my_ip = get_ip()
     net = my_ip.split(".")[:-1]
-    online_dev=list()
-    print (f"Scanning Hosts {my_ip}'s Network:")
-    for host in range(1,0x64): # 0xff only scanning /24 subnet
-        dev = ".".join(net)+"."+str(host)
-        response = os.popen(f"ping -w 1 {dev}") #-c 1
+    online_dev = list()
+    print(f"Scanning Hosts {my_ip}'s Network:")
+    for host in range(1, 0x64):  # 0xff only scanning /24 subnet
+        dev = ".".join(net) + "." + str(host)
+        response = os.popen(f"ping -w 1 {dev}")  # -c 1
         try:
             if(response.readlines()[5]):
                 print(f"{dev} is online")
