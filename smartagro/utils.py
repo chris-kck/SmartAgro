@@ -1,18 +1,22 @@
 """Utilities Module."""
-from paho import mqtt
+import paho.mqtt.client as mqtt
 import os
 import socket
 
 def bar():
     from smartagro import __author__
-    print('[mod2] bar(){}'.format(__author__)) # f'haha{var}' not supported in python 3.5
+    print('[mod2] bar(){}'.format(__author__))  # f'haha{var}' not supported in python 3.5
 
 
 class Bar:
     pass
 
-def config_broker(ip, QS, PORT, stream_schema): #mqtt broker configuration
-    pass
+
+def config_broker(broker="mqtt.eclipse.org", QS=0, PORT="1883", stream_schema=None):  # mqtt broker configuration
+    client = mqtt.Client("RPi0-ZA") #create new client
+    client.connect(broker,PORT) #connect to broker
+    client.publish("dev/test","OFF ua") #TOPIC & test payload
+
 
 def discover_devices(comm_interface): #scans address space and ports to discover connected I2C or SPI devices
     pass
