@@ -38,6 +38,17 @@ def sensor_update(addr, new_sample_rate): #Dynamic adjustment of sensor details
 def find_broker(): #Scan for a MQTT broker within network
     pass
 
+def get_ip():
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(('10.255.255.255', 1))
+        IP = s.getsockname()[0]
+    except:
+        IP = '127.0.0.1' #localhost loopback IP if not connected to wifi
+    finally:
+        s.close() #close socket
+    return IP
+
 def scan_network():
     pass
 
