@@ -50,7 +50,21 @@ def get_ip():
     return IP
 
 def scan_network():
-    pass
+    my_ip = get_ip()
+    net = my_ip.split(".")[:-1]
+    online_dev=list()
+    print (f"Scanning Hosts {my_ip}'s Network:")
+    for host in range(1,0x64): # 0xff only scanning /24 subnet
+        dev = ".".join(net)+"."+str(host)
+        response = os.popen(f"ping -w 1 {dev}") #-c 1
+        try:
+            if(response.readlines()[5]):
+                print(f"{dev} is online")
+                online_dev.append(dev)
+        except:
+            continue
+    #Add support to scan online hosts' ports to find broker. - still buggy
+
 
 #functions to communicate with Seeed devices. ADC/Direct/?
 
