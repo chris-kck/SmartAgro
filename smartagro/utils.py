@@ -64,6 +64,13 @@ def scan_network():
         except:
             continue
     #Add support to scan online hosts' ports to find broker. - still buggy
+    for  ip in online_dev:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        conn = s.connect_ex((ip,1883)) #scan port 1883 and 8883 for SSL
+        if(conn == 0) :
+            print(f'MQTT Port 1883 OPEN for {ip}')
+        s.close()
+        print("Scan Completed")
 
 
 #functions to communicate with Seeed devices. ADC/Direct/?
