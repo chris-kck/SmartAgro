@@ -1,5 +1,7 @@
 """Utilities Module."""
 from paho import mqtt
+import os
+import socket
 
 def bar():
     from smartagro import __author__
