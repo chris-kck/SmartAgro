@@ -6,7 +6,7 @@ import smartagro.smart, smartagro.utils
 
 #implement as: from smartagro.smartagro import * OR import smatagro then use smartagro.smartagro.func()
 
-# from smartagro import *, smart.foo(), utils.bar(), smart.SmartAgro()
+# from smartagro import *, smart.foo(), utils.bar(), smart.SmartAgro() .
 
 __author__ = """Kudzai Chris Kateera"""
 __email__ = 'kckateera@gmail.com'
