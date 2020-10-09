@@ -36,6 +36,9 @@ def sensor_update(addr, new_sample_rate): #Dynamic adjustment of sensor details
 def find_broker(): #Scan for a MQTT broker within network
     pass
 
+def scan_network():
+    pass
+
 #functions to communicate with Seeed devices. ADC/Direct/?
 
 
