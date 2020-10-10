@@ -116,8 +116,14 @@ def list_active_sensor_streams(broker):  # show topics being published to broker
 def sensor_update(addr, new_sample_rate):  # Dynamic adjustment of sensor details
     pass
 
-def find_broker():  # Scan for a MQTT broker within network
-    # Add support to scan online hosts' ports to find broker. - still buggy
+def find_broker():
+    """
+    Scan for a MQTT broker within network by checking online hosts then scanning for
+    open MQTT ports
+    # TODO Add support to scan online hosts' ports to find broker. - still buggy
+    :return: No return
+    """
+
     online_dev = scan_network()
     for ip in online_dev:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -129,6 +135,10 @@ def find_broker():  # Scan for a MQTT broker within network
 
 
 def get_ip():
+    """
+    Ger the IP address other than the loopback IP that the device has been allocated by DHCP
+    :return: IP address
+    """
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
         s.connect(('10.255.255.255', 1))
@@ -140,6 +150,10 @@ def get_ip():
     return IP
 
 def scan_network():
+    """
+    Scan subnet /24 of IP address to check for brokers on the local network.
+    :return: list of online devices responding to ICMP echo request using ping.
+    """
     my_ip = get_ip()
     net = my_ip.split(".")[:-1]
     online_dev = list()
@@ -154,6 +168,14 @@ def scan_network():
         except:
             continue
     return online_dev
+
+def gpio_init():
+    """
+    Function to initialize the GPIO pins and numbering system used.
+    :return: No return
+    """
+    GPIO.setmode(GPIO.BOARD) #Physical Pin Numbers
+    #remember to use GPIO.cleanup() and exit(0) for a graceful exit.
 
 # functions to communicate with Seeed devices. ADC/Direct/?
 
