@@ -79,7 +79,7 @@ def scan_network():
         dev = ".".join(net) + "." + str(host)
         response = os.popen(f"ping -w 1 {dev}")  # -c 1
         try:
-            if(response.readlines()[5]):
+            if (response.readlines()[5]):
                 print(f"{dev} is online")
                 online_dev.append(dev)
         except:
