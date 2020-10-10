@@ -14,7 +14,7 @@ class SmartAgro:
         self.qos = qos
         self.devices = devices
         #if none, scan network for brokers and connect to identified broker.
-        config_broker(broker_ip, qos, broker_port, stream_schema=None)
+        config_broker()
 
     def devices_init(self):
         pass
