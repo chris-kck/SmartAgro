@@ -10,18 +10,32 @@ except RuntimeError:
     print("Error importing RPi.GPIO! Use sudo / run sudo usermod -aG gpio <myusername> to get permission")
 
 def bar():
+    """
+    Useless test function
+    :return:
+    """
     from smartagro import __author__
     print('[mod2] bar(){}'.format(__author__))  # f'haha{var}' not supported in python 3.5
 
+topic = "SmartAgro/Sensors/"
 
 class Bar:
     pass
 
 
-def config_broker(broker="mqtt.eclipse.org", QS=0, PORT="1883", stream_schema=None):  # mqtt broker configuration
+def config_broker(broker="mqtt.eclipse.org", QS=0, PORT="1883", stream_schema="json"):
+    """
+    Function to configure a new broker to be published to.
+    :param broker: The url or ip address of the broker
+    :param QS: quality of service determining how many times message is sent. 0,1,2
+    :param PORT: broker port in use. default 1883, ssl 8883
+    :param stream_schema: the data stream schema used. Default is json
+    :return: No return
+    """
     client = mqtt.Client("RPi0-ZA") #create new client
     client.connect(broker,PORT) #connect to broker
     client.publish("dev/test","OFF ua") #TOPIC & test payload
+    #TODO test functionality
 
 
 def discover_devices(comm_interface):  # scans address space and ports to discover connected I2C or SPI devices
