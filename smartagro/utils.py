@@ -4,10 +4,10 @@
 #import socket
 #import mcp3008
 
-try:
-    import RPi.GPIO as GPIO
-except RuntimeError:
-    print("Error importing RPi.GPIO! Use sudo / run sudo usermod -aG gpio <myusername> to get permission")
+#try:
+#    import RPi.GPIO as GPIO
+#except RuntimeError:
+#    print("Error importing RPi.GPIO! Use sudo / run sudo usermod -aG gpio <myusername> to get permission")
 
 
 def bar():
