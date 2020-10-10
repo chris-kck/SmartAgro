@@ -1,12 +1,16 @@
-Welcome to Modules documentation!
+Package Modules
 ======================================
 
-
 .. automodule:: smartagro.smart
-    :members:.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+    :members:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
+   :caption: Contents:
+
+.. automodule:: smartagro.utils
+    :members:
+
+.. toctree::
+   :maxdepth: 3
    :caption: Contents:
