@@ -59,11 +59,35 @@ def sensor_attach_i2c(SensorType1, addr, sample_rate, broker):  # Add sensor, as
     pass
 
 
-def sensor_attach_serial(SensorType2, port, baud, broker):  # Add sensor, assign broker and topic
-    pass
+def sensor_attach_serial(SensorType2, spi_device, broker, baud=976000):  # Add sensor, assign broker and topic
+    """
+    Adds and configures an SPI device & adds its topic?
+    :param SensorType2:
+    :param spi_device: Either 0 or 1 as there are only 2 spo ports
+    :param baud: the bit rate, measured in bit/s clock rate used for device
+    :param broker: the MQTT broker in use
+    :return: No return
+    """
+    spi = spidev.SpiDev()
+    spi.open(0, spi_device)
+    spi.max_speed_hz = 976000
 
-def sensor_read_analogue():
-    adc = mcp3008.MCP3008()
+    CLK  = 23
+    MISO = 21
+    MOSI = 19
+    CS   = 24 if spi_device == 0 else 26 #CE0 or CE1
+
+    GPIO.setup(CLK, GPIO.OUT)
+    GPIO.setup(MISO, GPIO.IN)
+    GPIO.setup(MOSI, GPIO.OUT)
+    GPIO.setup(CS, GPIO.OUT)
+
+def sensor_read_analogue(channel):
+    """
+    Reads an analogue signal from the connected SPI ADC device
+    :return: ADC output Normalized with Vref.
+    """
+    adc = mcp3008.MCP3008(bus=0, device=0) #link with SPI device initialization. Docs: https://pypi.org/project/mcp3008/
     ADC_values = adc.read_all()
     adc.close()
 
