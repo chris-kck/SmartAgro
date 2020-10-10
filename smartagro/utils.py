@@ -89,7 +89,21 @@ def sensor_read_analogue(channel):
     """
     adc = mcp3008.MCP3008(bus=0, device=0) #link with SPI device initialization. Docs: https://pypi.org/project/mcp3008/
     ADC_values = adc.read_all()
+    print(ADC_values)
     adc.close()
+    return ADC_values[channel+8]
+
+def control_fan(gpio_pin, state):
+    """
+    Function to switch fan actuator ON or OFF
+    :param gpio_pin: The pin the fan relay (motor in demo) is connected to.
+    :param state: Boolean indicating whether fan is on or off.
+    :return: NO return
+    """
+    if state:
+        GPIO.output(gpio_pin,GPIO.HIGH)
+    else:
+        GPIO.output(gpio_pin,GPIO.HIGH)
 
 def sensor_detach(stream, broker):  # remove sensor from publishing topics
     pass
