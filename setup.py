@@ -10,7 +10,8 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['Click>=7.0', ] #packages what the person using the program needs. eg ADC libraries, etc that i will use.
+requirements = ['Click>=7.0', 'paho-mqtt==1.5.1','mcp3008','sockets', ]  #packages what the person using the
+# program needs. eg ADC libraries, etc that i will use.
 #requirements has debug n dev tools etc what u will include in venv
 
 setup_requirements = ['pytest-runner', ]
