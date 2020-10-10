@@ -38,12 +38,19 @@ def config_broker(broker="mqtt.eclipse.org", QS=0, PORT="1883", stream_schema="j
     #TODO test functionality
 
 
-def discover_devices(comm_interface):  # scans address space and ports to discover connected I2C or SPI devices
-    #os i2cdetect?
-    #1 I2C port and two SPI ports
+def discover_devices(comm_interface):
+    """
+    scans address space and ports to discover connected I2C or SPI devices
+    uses os i2cdetect for the 1 I2C port and also scans two SPI ports
+    :param comm_interface: communication interface to be scanned.
+    :return:
+    """
     print("Scan for connected I2C devices' addresses:")
     print(os.popen("i2cdetect -y 1").read())
-    #TODO Add SPI scanning support
+    # TODO Add SPI scanning support - can only be done by sending a valid
+    #  signal to spi mosi and geting a valid response on miso
+    print("Checking if SPI Module is loaded:")
+    print(os.popen("lsmod | grep spi").read())
 
 def create_sensor_type(read, write, config):  # Add support for new sensor type
     pass
