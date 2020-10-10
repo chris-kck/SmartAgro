@@ -1,8 +1,8 @@
 """Utilities Module."""
-import paho.mqtt.client as mqtt
-import os
-import socket
-import mcp3008
+#import paho.mqtt.client as mqtt
+#import os
+#import socket
+#import mcp3008
 
 try:
     import RPi.GPIO as GPIO
