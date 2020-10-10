@@ -6,7 +6,7 @@ import pytest
 
 from click.testing import CliRunner
 
-from smartagro import smartagro
+#from smartagro import smartagro
 from smartagro import cli
 
 
