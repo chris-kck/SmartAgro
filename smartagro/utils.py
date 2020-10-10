@@ -2,6 +2,7 @@
 import paho.mqtt.client as mqtt
 import os
 import socket
+import mcp3008
 
 def bar():
     from smartagro import __author__
@@ -32,9 +33,13 @@ def sensor_attach_i2c(SensorType1, addr, sample_rate, broker):  # Add sensor, as
     pass
 
 
-def sensor__attach_serial(SensorType2, port, baud, broker):  # Add sensor, assign broker and topic
+def sensor_attach_serial(SensorType2, port, baud, broker):  # Add sensor, assign broker and topic
     pass
 
+def sensor_read_analogue():
+    adc = mcp3008.MCP3008()
+    ADC_values = adc.read_all()
+    adc.close()
 
 def sensor_detach(stream, broker):  # remove sensor from publishing topics
     pass
