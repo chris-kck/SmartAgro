@@ -84,17 +84,9 @@ def scan_network():
                 online_dev.append(dev)
         except:
             continue
-    #Add support to scan online hosts' ports to find broker. - still buggy
-    for  ip in online_dev:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        conn = s.connect_ex((ip,1883)) #scan port 1883 and 8883 for SSL
-        if(conn == 0) :
-            print(f'MQTT Port 1883 OPEN for {ip}')
-        s.close()
-        print("Scan Completed")
+    return online_dev
+
+# functions to communicate with Seeed devices. ADC/Direct/?
 
 
-#functions to communicate with Seeed devices. ADC/Direct/?
-
-
-#All of the above for actuator //Connecting actuator to raspberry pi, configuring to subscribe to mqtt topics that send commands to activate / deactivate.
+# All of the above for actuator //Connecting actuator to raspberry pi, configuring to subscribe to mqtt topics that send commands to activate / deactivate.
