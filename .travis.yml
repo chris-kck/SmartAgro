@@ -10,7 +10,7 @@ python:
 install:
   - pip install -U tox-travis
   - pip install . #execute setup.py with requirements
-  - pip install requirements_dev.txt
+  - pip install -r requirements_dev.txt
 
 
 
