@@ -4,6 +4,11 @@ import os
 import socket
 import mcp3008
 
+try:
+    import RPi.GPIO as GPIO
+except RuntimeError:
+    print("Error importing RPi.GPIO! Use sudo / run sudo usermod -aG gpio <myusername> to get permission")
+
 def bar():
     from smartagro import __author__
     print('[mod2] bar(){}'.format(__author__))  # f'haha{var}' not supported in python 3.5
