@@ -2,7 +2,7 @@
 import paho.mqtt.client as mqtt
 import os
 import socket
-import mcp3008
+import smartagro.mcp3008 as mcp3008
 
 try:
     import RPi.GPIO as GPIO
