@@ -10,7 +10,7 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['Click>=7.0', 'paho-mqtt==1.5.1','mcp3008','sockets', ]  #packages what the person using the
+requirements = ['Click>=7.0', 'paho-mqtt==1.5.1','spidev', 'sockets', 'RPi.GPIO', ]  #packages what the person using the
 # program needs. eg ADC libraries, etc that i will use.
 #requirements has debug n dev tools etc what u will include in venv
 
@@ -28,7 +28,6 @@ setup(
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Natural Language :: English',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
