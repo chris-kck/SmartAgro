@@ -122,28 +122,6 @@ def list_active_sensor_streams(broker):  # show topics being published to broker
     pass
 
 
-def sensor_update(addr, new_sample_rate):  # Dynamic adjustment of sensor details
-    pass
-
-
-def find_broker():
-    """
-    Scan for a MQTT broker within network by checking online hosts then scanning for
-    open MQTT ports
-    # TODO Add support to scan online hosts' ports to find broker. - still buggy
-    :return: No return
-    """
-
-    online_dev = scan_network()
-    for ip in online_dev:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        conn = s.connect_ex((ip, 1883))  # scan port 1883 and 8883 for SSL
-        if (conn == 0):
-            print(f'MQTT Port 1883 OPEN for {ip}')
-        s.close()
-        print("Scan Completed")
-
-
 def get_ip():
     """
     Ger the IP address other than the loopback IP that the device has been allocated by DHCP
@@ -180,16 +158,33 @@ def scan_network():
             continue
     return online_dev
 
+def find_broker():
+    """
+    Scan for a MQTT broker within network by checking online hosts then scanning for
+    open MQTT ports
+    # TODO Add support to scan online hosts' ports to find broker. - still buggy
+    :return: No return
+    """
 
-def gpio_init():
+    online_dev = scan_network()
+    for ip in online_dev:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        conn = s.connect_ex((ip, 1883)) or s.connect_ex((ip, 8883))  #unencrypted port 1883 or encrypted port 8883 open.
+        if (conn == 0):
+            print(f'MQTT Port 1883 or 8883 OPEN for {ip}')
+        s.close()
+    print("Scan Completed")
+
+
+def actuator_init(output=[], mode="GPIO.BOARD"):
     """
     Function to initialize the GPIO pins and numbering system used.
     :return: No return
     """
-    GPIO.setmode(GPIO.BOARD)  # Physical Pin Numbers
+    GPIO.setmode(mode)  # Physical Pin Numbers
+    GPIO.setwarnings(False)
+    GPIO.setup(output, GPIO.OUT)
     # remember to use GPIO.cleanup() and exit(0) for a graceful exit.
-
-# functions to communicate with Seeed devices. ADC/Direct/?
 
 
 # All of the above for actuator //Connecting actuator to raspberry pi,

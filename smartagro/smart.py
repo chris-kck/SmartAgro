@@ -7,6 +7,8 @@ def foo():
 
 
 class SmartAgro:
+    #after searching for a broker
+    # this class instantiates an objecct wc has sensors added to itthen configures one. Next sensors are added with corresponding topics
 
     def __init__(self, broker_ip=None, broker_port=None, qos=0, devices=4):
         self.broker_IP = broker_ip
