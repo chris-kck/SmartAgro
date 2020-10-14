@@ -28,13 +28,13 @@ class Bar:
 
 def config_broker(broker="mqtt.eclipse.org", QS=0, port="1883", stream_schema="json"):
     """
-    Function to configure a new broker to be published to. <br>
+    Function to configure a new broker to be published to.
 
-    :param broker: The url or ip address of the broker <br>
-    :param QS: quality of service determining how many times message is sent. 0,1,2 <br>
-    :param port: broker port in use. default 1883, ssl 8883 <br>
-    :param stream_schema: the data stream schema used. Default is json <br>
-    :return: No return <br>
+    :param broker: The url or ip address of the broker.
+    :param QS: quality of service determining how many times message is sent. 0,1,2
+    :param port: broker port in use. default 1883, ssl 8883
+    :param stream_schema: the data stream schema used. Default is json
+    :return: No return
 
     """
     client = mqtt.Client("RPi0-ZA")  # create new client
@@ -45,10 +45,12 @@ def config_broker(broker="mqtt.eclipse.org", QS=0, port="1883", stream_schema="j
 
 def discover_devices(comm_interface):
     """
-    scans address space and ports to discover connected I2C or SPI devices
+    Scans address space and ports to discover connected I2C or SPI devices
     uses os i2cdetect for the 1 I2C port and also scans two SPI ports
+
     :param comm_interface: communication interface to be scanned.
     :return:
+
     """
     print("Scan for connected I2C devices' addresses:")
     print(os.popen("i2cdetect -y 1").read())
@@ -69,6 +71,7 @@ def sensor_attach_i2c(SensorType1, addr, sample_rate, broker):  # Add sensor, as
 def sensor_attach_serial(SensorType2, spi_device, broker, baud=976000):  # Add sensor, assign broker and topic
     """
     Adds and configures an SPI device & adds its topic?
+
     :param SensorType2:
     :param spi_device: Either 0 or 1 as there are only 2 spo ports
     :param baud: the bit rate, measured in bit/s clock rate used for device
@@ -93,6 +96,7 @@ def sensor_attach_serial(SensorType2, spi_device, broker, baud=976000):  # Add s
 def sensor_read_analogue(channel):
     """
     Reads an analogue signal from the connected SPI ADC device
+
     :return: ADC output Normalized with Vref.
     """
     # link with SPI device initialization. Docs: https://pypi.org/project/mcp3008/
@@ -106,6 +110,7 @@ def sensor_read_analogue(channel):
 def control_fan(gpio_pin, state):
     """
     Function to switch fan actuator ON or OFF
+
     :param gpio_pin: The pin the fan relay (motor in demo) is connected to.
     :param state: Boolean indicating whether fan is on or off.
     :return: NO return
@@ -127,6 +132,7 @@ def list_active_sensor_streams(broker):  # show topics being published to broker
 def get_ip():
     """
     Ger the IP address other than the loopback IP that the device has been allocated by DHCP
+
     :return: IP address
     """
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -143,6 +149,7 @@ def get_ip():
 def scan_network():
     """
     Scan subnet /24 of IP address to check for brokers on the local network.
+
     :return: list of online devices responding to ICMP echo request using ping.
     """
     my_ip = get_ip()
@@ -165,6 +172,7 @@ def find_broker():
     Scan for a MQTT broker within network by checking online hosts then scanning for
     open MQTT ports
     # TODO Add support to scan online hosts' ports to find broker. - still buggy
+
     :return: No return
     """
 
@@ -181,6 +189,7 @@ def find_broker():
 def actuator_init(output=[], mode="GPIO.BOARD"):
     """
     Function to initialize the GPIO pins and numbering system used.
+
     :return: No return
     """
     GPIO.setmode(mode)  # Physical Pin Numbers
