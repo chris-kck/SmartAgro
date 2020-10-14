@@ -20,3 +20,6 @@ class SmartAgro:
 
     def devices_init(self):
         pass
+
+    def add_sensor(self):
+        pass

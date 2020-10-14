@@ -28,12 +28,14 @@ class Bar:
 
 def config_broker(broker="mqtt.eclipse.org", QS=0, port="1883", stream_schema="json"):
     """
-    Function to configure a new broker to be published to.
-    :param broker: The url or ip address of the broker
-    :param QS: quality of service determining how many times message is sent. 0,1,2
-    :param port: broker port in use. default 1883, ssl 8883
-    :param stream_schema: the data stream schema used. Default is json
-    :return: No return
+    Function to configure a new broker to be published to. <br>
+
+    :param broker: The url or ip address of the broker <br>
+    :param QS: quality of service determining how many times message is sent. 0,1,2 <br>
+    :param port: broker port in use. default 1883, ssl 8883 <br>
+    :param stream_schema: the data stream schema used. Default is json <br>
+    :return: No return <br>
+
     """
     client = mqtt.Client("RPi0-ZA")  # create new client
     client.connect(broker, port)  # connect to broker
