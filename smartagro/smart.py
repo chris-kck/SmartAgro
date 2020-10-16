@@ -47,5 +47,15 @@ class SmartAgro:
     def on_message(self, client, userdata, msg):
         print(msg.topic+" "+str(msg.payload))
 
-    def add_sensor(self):
-        pass
+    def read_sensor(self, channel):
+        #add sensor and add topic
+        reading = utils.read_analogue(channel)
+        self.sensors.add(channel)
+        self.client.publish(f"smartagro/sensor{channel}", reading) #sensor ID
+
+    def activate_actuator(self, gpio_pin, state):
+        utils.switch_actuator(gpio_pin, state)
+        self.actuators.add(gpio_pin)
+        self.client.publish(f"smartagro/actuator{gpio_pin}", state) #actuator ID
+
+    #TODO Implement listening of mqtt actuator publish
