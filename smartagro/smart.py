@@ -64,3 +64,4 @@ class SmartAgro:
         self.client.publish(f"smartagro/actuator{gpio_pin}", state)  # actuator ID
 
     # TODO Implement listening of mqtt actuator publish
+    # TODO add Keyboard interrupt catch for graceful exit.
