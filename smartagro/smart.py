@@ -11,11 +11,12 @@ class SmartAgro:
     #after searching for a broker
     # this class instantiates an objecct wc has sensors added to itthen configures one. Next sensors are added with corresponding topics
 
-    def __init__(self, broker_ip=None, broker_port=None, qos=0, devices=4):
-        self.broker_IP = broker_ip
-        self.broker_PORT = broker_port
+    def __init__(self, broker_address="test.mosquitto.org", broker_port=1883, qos=0):
+        self.broker_address = broker_address
+        self.broker_port = broker_port
         self.qos = qos
-        self.devices = devices
+        self.sensors = set()
+        self.actuators = set()
         #if none, scan network for brokers and connect to identified broker.
         #config_broker()
 
