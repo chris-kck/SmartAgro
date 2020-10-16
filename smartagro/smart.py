@@ -18,10 +18,34 @@ class SmartAgro:
         self.sensors = set()
         self.actuators = set()
         #if none, scan network for brokers and connect to identified broker.
-        #config_broker()
+        self.config_broker(broker_address, qos, broker_port)
+        utils.gpio_init()
+        utils.sensor_attach_serial()
 
-    def devices_init(self):
-        pass
+    def config_broker(self, broker, qos, port="1883", stream_schema="json"):
+        """
+        Function to configure a new broker to be published to.
+
+        :param broker: The url or ip address of the broker.
+        :param QS: quality of service determining how many times message is sent. 0,1,2
+        :param port: broker port in use. default 1883, ssl 8883
+        :param stream_schema: the data stream schema used. Default is json
+        :return: mqtt client object
+
+        """
+        self.client = mqtt.Client("RPi0-ZA-2020")  # create new client
+        self.client.connect(broker, port)  # connect to broker
+        self.client.publish(topic="dev/test", payload="OFF ua", qos=qos)  # TOPIC & test payload
+        self.client.on_connect = self.on_connect
+        self.client.on_message = self.on_message
+
+    # The callback for when a PUBLISH message is received from the server.
+    def on_connect(self, client, userdata, flags, rc):
+        print("Connected with result code "+str(rc))
+
+    # The callback for when a PUBLISH message is received from the server.
+    def on_message(self, client, userdata, msg):
+        print(msg.topic+" "+str(msg.payload))
 
     def add_sensor(self):
         pass
