@@ -1,8 +1,6 @@
 """Utilities Module."""
-import paho.mqtt.client as mqtt
 import os
 import socket
-import smartagro.mcp3008 as mcp3008
 
 try:
     import RPi.GPIO as GPIO
@@ -69,6 +67,7 @@ def read_analogue(channel):
     """
     Reads an analogue signal from the connected SPI ADC device
 
+    :param channel: ADC channel where sensor is connected.
     :return: ADC output Normalized with Vref.
     """
     # link with SPI device initialization. Docs: https://pypi.org/project/mcp3008/
