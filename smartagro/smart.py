@@ -1,5 +1,6 @@
 """Main module."""
-#from smartagro.utils import *
+from smartagro import utils
+import paho.mqtt.client as mqtt
 
 
 def foo():
