@@ -1,6 +1,7 @@
 """Main module."""
 from smartagro import utils
 import paho.mqtt.client as mqtt
+import Adafruit_DHT
 
 
 def foo():
@@ -23,6 +24,7 @@ class SmartAgro:
         self.sensors = set()
         self.actuators = set()
         # if none, scan network for brokers and connect to identified broker.
+        #scan with utils.find_broker()
         self.config_broker(broker_address, qos, broker_port)
         utils.gpio_init()
         utils.sensor_attach_serial()
@@ -40,7 +42,7 @@ class SmartAgro:
         """
         self.client = mqtt.Client("RPi0-ZA-2020")  # create new client
         self.client.connect(broker, port)  # connect to broker
-        self.client.publish(topic="dev/test", payload="OFF ua", qos=qos)  # TOPIC & test payload
+        self.client.publish(topic="smartagro/test", payload="Test Successful", qos=qos)  # TOPIC & test payload
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
 
@@ -53,15 +55,37 @@ class SmartAgro:
         print(msg.topic + " " + str(msg.payload))
 
     def read_sensor(self, channel):
-        # add sensor and add topic
         reading = utils.read_analogue(channel)
-        self.sensors.add(channel)
-        self.client.publish(f"smartagro/sensor{channel}", reading)  # sensor ID
+        self.client.publish(f"smartagro/sensor/{channel}", reading)  # sensor ID
+        self.sensors.add(f"smartagro/sensor/{channel}")
+
+    def read_dht_11(self,pin=17):
+        sensor=11 #DHT11 sensor
+        humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
+        self.client.publish(f"smartagro/sensor/humidity", humidity)
+        self.client.publish(f"smartagro/sensor/temperature", temperature)
+        self.sensors.add(f"smartagro/sensor/humidity")
+        self.sensors.add(f"smartagro/sensor/temperature")
+
+    def read_all(self):
+        for channel in range(3):
+            self.read_sensor(channel)
+        self.read_dht_11()
 
     def activate_actuator(self, gpio_pin, state):
         utils.switch_actuator(gpio_pin, state)
-        self.actuators.add(gpio_pin)
-        self.client.publish(f"smartagro/actuator{gpio_pin}", state)  # actuator ID
+        self.client.publish(f"smartagro/actuator/{gpio_pin}", state)  # actuator ID
+        self.actuators.add(f"smartagro/actuator/{gpio_pin}")
 
-    # TODO Implement listening of mqtt actuator publish
-    # TODO add Keyboard interrupt catch for graceful exit.
+    def remove_device(self, device):
+        try:
+            self.actuators.remove(device) if device in self.actuators else self.sensors.remove(device)
+        except KeyError:
+            print("The device you are trying to remove des not exist. Check connected devices again!")
+
+
+    def active_devices(self):
+        return (self.actuators | self.sensors)
+
+# TODO Implement listening of mqtt actuator publish
+# TODO add Keyboard interrupt catch for graceful exit.
