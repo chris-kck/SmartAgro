@@ -96,10 +96,6 @@ def sensor_detach(stream, broker):  # remove sensor from publishing topics
     pass
 
 
-def list_active_sensor_streams(broker):  # show topics being published to broker
-    pass
-
-
 def get_ip():
     """
     Ger the IP address other than the loopback IP that the device has been allocated by DHCP
