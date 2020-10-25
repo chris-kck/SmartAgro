@@ -8,10 +8,11 @@ Installation
 Stable release
 --------------
 
-To install SmartAgro, run this command in your terminal:
+To install SmartAgro, run these command in your terminal:
 
 .. code-block:: console
 
+    $ sudo apt-install libgpiod2
     $ pip3 install smartagro
 
 This is the preferred method to install SmartAgro, as it will always install the most recent stable release.
