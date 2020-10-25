@@ -13,7 +13,6 @@ import smartagro.smart
 __author__ = """Kudzai Chris Kateera"""
 __email__ = 'kckateera@gmail.com'
 __version__ = '0.1.1'
-__all__ = ['smart','utils'] #imports for from <package_name> import *
+__all__ = ['smart', 'utils'] #imports for from <package_name> import *
 
-
-print("Invoking __init.py__ for".format(__name__))
+print(f"Invoking __init.py__ for {__name__}")
