@@ -1,12 +1,8 @@
 """Main module."""
 from smartagro import utils
 import paho.mqtt.client as mqtt
-import Adafruit_DHT
-
-
-def foo():
-    print('[mod1] foo()')
-
+import adafruit_dht
+import time
 
 class SmartAgro:
     """
@@ -23,9 +19,10 @@ class SmartAgro:
         self.qos = qos
         self.sensors = set()
         self.actuators = set()
+        self.dhtDevice = adafruit_dht.DHT11(18) #GPIO 18 (Physical 12)
         # if none, scan network for brokers and connect to identified broker.
-        #scan with utils.find_broker()
-        self.config_broker(broker_address, qos, broker_port)
+        # scan with utils.find_broker()
+        self.config_broker()
         utils.gpio_init()
         utils.sensor_attach_serial()
 
