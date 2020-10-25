@@ -6,11 +6,15 @@ import time
 
 class SmartAgro:
     """
-
-    after searching for a broker
-    this class instantiates an object wc has sensors added to it then configures one. N
-    ext sensors are added with corresponding topics
+    Implemented After searching for a broker
+    Instantiates an object which has sensors added to it then configures a broker.
+    Sensors are attached added with corresponding topics
+    Sensor Data is published and Actuator can be activated
     """
+
+    def __init__(self):
+        """
+        Object constructor for the sensors and actuators to be attached to it.
 
 
     def __init__(self, broker_address="test.mosquitto.org", broker_port=1883, qos=0):
@@ -24,9 +28,8 @@ class SmartAgro:
         # scan with utils.find_broker()
         self.config_broker()
         utils.gpio_init()
-        utils.sensor_attach_serial()
 
-    def config_broker(self, broker, qos, port=1883, stream_schema="json"):
+    def config_broker(self, broker="test.mosquitto.org", qos=0, port=1883, stream_schema="json"):
         """
         Function to configure a new broker to be published to.
 
@@ -43,13 +46,28 @@ class SmartAgro:
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
 
-    # The callback for when a PUBLISH message is received from the server.
     def on_connect(self, client, userdata, flags, rc):
+        """
+        The callback for when a connection is established with the server.
+
+        :param client:
+        :param userdata:
+        :param flags:
+        :param rc:
+        :return:
+        """
         print("Connected with result code " + str(rc))
 
-    # The callback for when a PUBLISH message is received from the server.
     def on_message(self, client, userdata, msg):
-        print(msg.topic + " " + str(msg.payload))
+        """
+        The callback for when a PUBLISH message is received from the server.
+
+        :param client:
+        :param userdata:
+        :param msg:
+        :return:
+        """
+        pass #print(msg.topic + " " + str(msg.payload))
 
     def read_sensor(self, channel):
         reading = utils.read_analogue(channel)
