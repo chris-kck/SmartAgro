@@ -1,4 +1,4 @@
-"""Utilities Module."""
+"""Utilities Module. With several functions that are repeatedly used"""
 import os
 import socket
 import spidev
@@ -14,13 +14,9 @@ def discover_i2c():
     Scans address space and ports to discover connected I2C or SPI devices
     uses os i2cdetect for the 1 I2C port and also scans two SPI ports
 
-    :return:
-
     """
     print("Scan for connected I2C devices' addresses:")
     print(os.popen("i2cdetect -y 1").read())
-    # TODO Add SPI scanning support - can only be done by sending a valid
-    #  signal to spi mosi and geting a valid response on miso
     print("Checking if SPI Module is loaded:")
     print(os.popen("lsmod | grep spi").read())
 
@@ -30,11 +26,13 @@ def read_analogue(channel, spi_device=0, baud=1350000):
     Reads an analogue signal from the connected SPI ADC device and returns channel reading.
 
     :param channel: ADC channel where sensor is connected.
+    :type channel: int
     :param spi_device: Either 0 or 1 as there are only 2 spi ports
+    :type spi_device: int
     :param baud: the bit rate, measured in bit/s clock rate used for device
-    :return: ADC output Normalized with Vref.
+    :type baud: int
+    :return: Raw 1024 bit ADC output data.
     """
-    # link with SPI device initialization. Docs: https://pypi.org/project/mcp3008/
     spi = spidev.SpiDev()
     spi.open(0, spi_device)
     spi.max_speed_hz = baud  # spi clock speed
@@ -48,8 +46,9 @@ def switch_actuator(gpio_pin, state):
     Function to switch actuator ON or OFF
 
     :param gpio_pin: The pin the fan relay (motor in demo) is connected to.
+    :type gpio_pin: int
     :param state: Boolean indicating whether fan is on or off.
-    :return: NO return
+    :type state: boolean
     """
     GPIO.setup(gpio_pin, GPIO.OUT)  # repetitive, will need to be done once.
     GPIO.output(gpio_pin, state)
@@ -66,15 +65,15 @@ def scan_network():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
         s.connect(('10.255.255.255', 1))
-        IP = s.getsockname()[0]
+        ip = s.getsockname()[0]
     except:
-        IP = '127.0.0.1'  # localhost loopback IP if not connected to wifi
+        ip = '127.0.0.1'  # localhost loopback IP if not connected to wifi
     finally:
         s.close()  # close socket
 
-    net = IP.split(".")[:-1]
+    net = ip.split(".")[:-1]
     online_dev = list()
-    print(f"Scanning Hosts {IP}'s Network:")
+    print(f"Scanning Hosts {ip}'s Network:")
     for host in range(1, 0x64):  # 0xff only scanning /24 subnet
         dev = ".".join(net) + "." + str(host)
         response = os.popen(f"ping -w 1 {dev}")  # -c 1
@@ -96,12 +95,12 @@ def find_broker():
     """
 
     online_dev = scan_network()
-    online_dev = ["mqtt.eclipse.org","test.mosquitto.org"]+online_dev  # prepend online test brokers
+    online_dev = ["mqtt.eclipse.org", "test.mosquitto.org"]+online_dev  # prepend online test brokers
     for ip in online_dev:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # unencrypted port 1883 or encrypted port 8883 open.
         conn = min(s.connect_ex((ip, 1883)), s.connect_ex((ip, 8883)))
-        if (conn == 0):
+        if conn == 0:
             print(f'MQTT Port 1883 or 8883 OPEN for {ip}')
         else:
             print(f'MQTT Port 1883 or 8883 CLOSED for {ip}')
@@ -113,7 +112,7 @@ def gpio_init():
     """
     Function to initialize the GPIO pins, numbering system used and communication protocols.
     GPIO.BCM IS THE DEFAULT
-    :return: No return
+
     """
     GPIO.setmode(GPIO.BCM)  # Physical Board Pin Numbers
     GPIO.setwarnings(False)
@@ -127,13 +126,6 @@ def cleanup():
     spidev.SpiDev().close()  # close SPI connection
     GPIO.cleanup()
     exit(0)
-
-# All of the above for actuator //Connecting actuator to raspberry pi,
-# configuring to subscribe to mqtt topics that send commands to activate / deactivate.
-
-# Future functions to be implemented
-def sensor_detach(stream, broker):  # remove sensor from publishing topics
-    pass
 
 def create_sensor_type(read, write, config):  # Add support for new sensor type
     pass
