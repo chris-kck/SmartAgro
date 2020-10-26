@@ -11,7 +11,7 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['Click>=7.0', 'paho-mqtt==1.5.1', 'spidev', 'sockets', 'RPi.GPIO',] # "Adafruit_Python_DHT --install-option='--force-pi'", ]
+requirements = ['Click>=7.0', 'paho-mqtt==1.5.1', 'spidev', 'sockets', 'RPi.GPIO', 'adafruit-circuitpython-dht']
 # production program requirements. eg ADC libraries, etc that i will use.
 # requirements has debug n dev tools etc what u will include in venv
 
