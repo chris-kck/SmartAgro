@@ -24,7 +24,7 @@ setup(
     author_email='kckateera@gmail.com',
     python_requires='>=3.6',
     classifiers=[
-        'Development Status :: 2 - Production',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Natural Language :: English',
