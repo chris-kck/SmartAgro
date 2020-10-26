@@ -1,7 +1,7 @@
 Package Modules
 ======================================
 
-.. automodule:: smartagro.smart
+.. autoclass:: smartagro.smart.SmartAgro
     :members:
 
 .. toctree::

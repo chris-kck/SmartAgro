@@ -2,7 +2,9 @@
 #this file is always run each time the package is imported.
 #will use this to  effect automatic importing of modules. instead of smartagro.smartagro.func()
 
-import smartagro.smart, smartagro.utils
+import smartagro.utils
+import smartagro.smart
+#from smartagro.smart import SmartAgro
 
 #implement as: from smartagro.smartagro import * OR import smatagro then use smartagro.smartagro.func()
 
@@ -10,8 +12,7 @@ import smartagro.smart, smartagro.utils
 
 __author__ = """Kudzai Chris Kateera"""
 __email__ = 'kckateera@gmail.com'
-__version__ = '0.1.0'
-__all__ = ['smart','utils'] #imports for from <package_name> import *
+__version__ = '0.2.0'
+__all__ = ['smart', 'utils'] #imports for from <package_name> import *
 
-
-print("Invoking __init.py__ for".format(__name__))
+print(f"Invoking __init.py__ for {__name__}")

@@ -1,5 +1,5 @@
 #Idea Project files
-.idea
+/.idea/
 *.iml
 *.xml
 /out/
