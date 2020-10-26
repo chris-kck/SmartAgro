@@ -74,7 +74,7 @@ class SmartAgro:
         :param channel:
         :return:
         """
-        reading = utils.read_analogue(channel)/7
+        reading = utils.read_analogue(channel)
         self.client.publish(f"smartagro/sensor/{'Moisture' if channel==0 else 'Light'}", reading)  # sensor ID
         self.sensors.add(f"smartagro/sensor/{'Moisture' if channel==0 else 'Light'}")
         return reading
@@ -109,8 +109,8 @@ class SmartAgro:
         return temperature, humidity
 
     def read_all(self):
-        moist = self.read_sensor(0)  # Moisture
-        light = self.read_sensor(2)  # Light
+        moist = self.read_sensor(0)/7  # Moisture
+        light = self.read_sensor(2)/7  # Light
         temp, humid = self.read_dht()  # DHT
         return moist, light, temp, humid
 
