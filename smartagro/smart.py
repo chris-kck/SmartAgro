@@ -4,14 +4,14 @@ import paho.mqtt.client as mqtt
 import adafruit_dht
 import time
 
-class SmartAgro:
+
+class SmartAgro(object):
     """
     Implemented After searching for a broker
     Instantiates an object which has sensors added to it then configures a broker.
     Sensors are attached added with corresponding topics
     Sensor Data is published and Actuator can be activated
     """
-
     def __init__(self):
         """
         Object constructor for the sensors and actuators to be attached to it.
@@ -20,7 +20,7 @@ class SmartAgro:
         self.client = None
         self.sensors = set()
         self.actuators = set()
-        self.dhtDevice = adafruit_dht.DHT11(18) #GPIO 18 (Physical 12)
+        self.dhtDevice = adafruit_dht.DHT11(18)  # DHT init GPIO 18 (Physical 12)
         # if none, scan network for brokers and connect to identified broker.
         # scan with utils.find_broker()
         self.config_broker()
@@ -40,41 +40,43 @@ class SmartAgro:
         self.client = mqtt.Client("RPi0-ZA-2020")  # create new client
         self.client.connect(broker, port)  # connect to broker
         self.client.publish(topic="smartagro/test", payload="Test Successful", qos=qos)  # TOPIC & test payload
-        #self.client.subscribe("smartagro/#")
+        self.client.subscribe("smartagro/actuator/#")
         self.client.on_connect = self.on_connect
         self.client.on_message = self.on_message
         self.client.loop_start()
 
-    def on_connect(self, client, userdata, flags, rc):
+    @staticmethod
+    def on_connect(client, userdata, flags, rc):
         """
         The callback for when a connection is established with the server.
 
-        :param client:
-        :param userdata:
-        :param flags:
-        :param rc:
-        :return:
+        :param client: Mqtt Client
+        :param userdata: Authentication data
+        :param flags: Connection indicators
+        :param rc: status code of connection
         """
         print("Connected with result code " + str(rc))
 
-    def on_message(self, client, userdata, msg):
+    @staticmethod
+    def on_message(client, userdata, msg):
         """
         The callback for when a PUBLISH message is received from the server.
 
-        :param client:
-        :param userdata:
-        :param msg:
-        :return:
+        :param client: MQtt client
+        :param userdata: data used for authenticated connections
+        :param msg: received message topic and payload in bytes
         """
-        pass #print(msg.topic + " " + str(msg.payload))
+        if msg.topic == "smartagro/actuator/GPIO15":
+            utils.switch_actuator(int(msg.topic[-2:]), bool(int(msg.payload.decode('utf-8'))))
 
     def read_sensor(self, channel):
         """
-        # Reads sensor, publishes topic to broker
-        :param channel:
-        :return:
+        Reads sensor, publishes topic to broker, adds to active sensors
+
+        :param channel: ADC channel to be read.
         """
-        reading = utils.read_analogue(channel)
+        reading = utils.read_analogue(channel)/7
+        reading = round(reading, 2)
         self.client.publish(f"smartagro/sensor/{'Moisture' if channel==0 else 'Light'}", reading)  # sensor ID
         self.sensors.add(f"smartagro/sensor/{'Moisture' if channel==0 else 'Light'}")
         return reading
@@ -83,22 +85,20 @@ class SmartAgro:
         """
         A function to get readings from the single wire DHT11 device.
 
-        :param gpio: GPIO Pin connected to DHT Data Pin Default: GPIO 18 (Physical 12)
         :return: Temperature and Humidity Readings
         """
         try:
-            temp=humidity=0
+            temp = humidity = 0
             temp, humidity = self.dhtDevice.temperature, self.dhtDevice.humidity
         except RuntimeError as error:
             print(error.args[0])
-            time.sleep(2.0) # Retry after 2 seconds
+            time.sleep(2.0)  # Retry after 2 seconds
             temp, humidity = self.dhtDevice.temperature, self.dhtDevice.humidity
         except Exception as error:
             self.dhtDevice.exit()
             raise error
         finally:
-            print(f"Temp: {round(temp,2)} C &  Humidity: {round(humidity,2)}% ")  # TODO REMOVE LINE
-            yield temp, humidity
+            yield round(temp, 2), round(humidity, 2)  # use generators
 
     def read_dht(self):
         temperature, humidity = next(self.get_dht())
@@ -109,17 +109,36 @@ class SmartAgro:
         return temperature, humidity
 
     def read_all(self):
-        moist = self.read_sensor(0)/7  # Moisture
-        light = self.read_sensor(2)/7  # Light
+        """
+        A function to read all the values at once
+
+        :return: A list of current moisture, light, temperature, humidity values
+        """
+        moist = self.read_sensor(0)  # Moisture
+        light = self.read_sensor(2)  # Light
         temp, humid = self.read_dht()  # DHT
         return moist, light, temp, humid
 
     def activate_actuator(self, gpio_pin, state):
+        """
+        A function to activate or deactivate an actuator.
+
+        :param gpio_pin: GPIO pic of connected actuator.
+        :type gpio_pin: int
+        :param state: State whether it is on or Off
+        :type state: bool
+        """
         utils.switch_actuator(gpio_pin, state)
-        self.client.publish(f"smartagro/actuator/{gpio_pin}", state)  # actuator ID
-        self.actuators.add(f"smartagro/actuator/{gpio_pin}")
+        self.client.publish(f"smartagro/actuator/GPIO{gpio_pin}", state)  # actuator ID
+        self.actuators.add(f"smartagro/actuator/GPIO{gpio_pin}")
 
     def remove_device(self, device):
+        """
+        Function to remove device from published topics
+
+        :param device: Device Topic
+        :type device: str
+        """
         try:
             self.actuators.remove(device) if device in self.actuators else self.sensors.remove(device)
         except KeyError:
@@ -127,6 +146,3 @@ class SmartAgro:
 
     def active_devices(self):
         return self.actuators | self.sensors
-
-# TODO Implement listening of mqtt actuator publish
-# TODO add Keyboard interrupt catch for graceful exit.
