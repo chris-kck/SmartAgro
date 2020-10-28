@@ -38,6 +38,7 @@ def read_analogue(channel, spi_device=0, baud=1350000):
     spi.max_speed_hz = baud  # spi clock speed
     _, byte1, byte2 = spi.xfer2([1, (8+channel) << 4, 0])
     raw_data = ((byte1 & 3) << 8) + byte2
+    spi.close()
     return raw_data
 
 
